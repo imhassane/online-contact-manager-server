@@ -1,0 +1,40 @@
+# import User from './schemas/user.graphql'
+# import Profil from './schemas/profil.graphql'
+# import Contact from './schemas/Contact.graphql'
+# import Authentication from './schemas/Authentication.graphql'
+
+scalar DateTime
+
+type Query {
+    # Utilisateurs.
+    user(_id: ID!): User!
+
+    # Contacts.
+    contacts: [Contact!]
+    contact(_id: ID!): Contact
+    userContacts(userID: ID!): [Contact!]
+}
+
+type Mutation {
+    # Utilisateurs.
+    createUser(email: String!, password: String!): User!
+    updateUser(email: String, password: String): User!
+    deleteUser(_id: ID!): User!
+
+    authenticate(email: String!, password: String!): Authentication!
+    
+    # Contacts.
+    createContact(
+        first_name: String, last_name: String,
+        email: String,
+        country_code: Int, phone_number: String
+    ): Contact!
+
+    updateContact(
+        first_name: String, last_name: String,
+        email: String,
+        country_code: Int, phone_number: String
+    ): Contact!
+
+    deleteContact(_id: ID!): Contact!
+}

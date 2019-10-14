@@ -1,0 +1,3 @@
+type Authentication {
+    token: String!
+}
