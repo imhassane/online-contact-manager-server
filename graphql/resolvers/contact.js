@@ -9,7 +9,11 @@ const contact = async (parent, data, context) => {
 };
 
 const contacts = async (parent, data, context) => {
-    return context.user.contacts;
+    return context.user.contacts.reverse();
+}
+
+const favorites = async (parent, data, context) => {
+  return context.user.favorites.reverse();
 }
 
 const createContact = async (parent, data, context) => {
@@ -47,7 +51,41 @@ const deleteContact = async (parent, data, context) => {
     } catch(ex) { throw ex; }
 };
 
+const addToFavorites = async (parent, data, context) => {
+  try {
+    const _contact = await Contact.findOne(data);
+    if(!_contact) throw new Error("This contact does not exist");
+
+    if(!context.user.inFavorites(data._id)) {
+      context.user.favorites.push(_contact);
+      await context.user.save();
+
+      _contact.in_favorites = true;
+      await _contact.save();
+    }
+
+    return _contact;
+  } catch(ex) { throw ex; }
+}
+
+const removeFromFavorites = async (parent, data, context) => {
+  try {
+    const _contact = await Contact.findOne(data);
+    if(!_contact) throw new Error("This contact does not exist");
+
+    if(context.user.inFavorites(data._id)) {
+      context.user.favorites.remove(_contact);
+      await context.user.save();
+
+      _contact.in_favorites = false;
+      await _contact.save();
+    }
+
+    return _contact;
+  } catch(ex) { throw ex; }
+}
+
 module.exports = {
-    ContactQueries: { contact, contacts },
-    ContactMutations: { createContact, updateContact, deleteContact },
+    ContactQueries: { contact, contacts, favorites },
+    ContactMutations: { createContact, updateContact, deleteContact, addToFavorites, removeFromFavorites },
 };

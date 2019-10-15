@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
+const { Profil } = require('./profil');
 
 const UserSchema = new mongoose.Schema({
    email: { type: String, required: true, unique: true },
    password: { type: String, required: true },
    contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Contact" }],
+   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Contact" }]
 }, { timestamps: true });
 
 UserSchema.pre('save', function() {
@@ -16,8 +18,20 @@ UserSchema.pre('save', function() {
     }
 });
 
+// Création du profil de l'utilisateur après la création de son compte.
+UserSchema.post('save', async function() {
+  const profil = new Profil();
+  profil.user = this;
+  await profil.save();
+});
+
 UserSchema.methods.comparePasswords = function(other) {
     return bcrypt.compareSync(other, this.password);
+}
+
+UserSchema.methods.inFavorites = function(favorite) {
+  let _favs = this.favorites.filter(f => f._id.toString() === favorite);
+  return _favs.length > 0;
 }
 
 UserSchema.methods.hasContact = function(email, country_code, phone_number) {

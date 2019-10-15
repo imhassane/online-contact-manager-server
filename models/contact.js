@@ -7,6 +7,7 @@ const ContactSchema = new mongoose.Schema({
     email: String,
     country_code: Number,
     phone_number: String,
+    in_favorites: { type: Boolean, default: false }
 }, { timestamps: true });
 
 const Contact = mongoose.model('Contact', ContactSchema);

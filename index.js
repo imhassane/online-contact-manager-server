@@ -18,7 +18,7 @@ const logger = require('./startup/logger');
 const context = async ({ req }) => {
     try {
         let _context = {};
-        const token = req.headers.authtoken;
+        const token = req.headers.authorization;
         if(token) {
             const user = await getUserFromToken(token);
             _context = { ..._context, user };

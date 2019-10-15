@@ -1,5 +1,20 @@
 const { User, validateUser } = require('../../models/user');
+const { Profil } = require('../../models/profil');
+
 const { sign } = require('jsonwebtoken');
+
+const me = async (parent, data, context) => {
+  try {
+    let _profil = await Profil.findOne({ user: context.user }).populate('user');
+    if(!_profil) {
+      _profil = new Profil();
+      _profil.user = context.user;
+      _profil = await _profil.save();
+    }
+
+    return _profil;
+  } catch(ex) { throw ex; }
+}
 
 const user = async (parent, data, context) => {
     try {
@@ -33,7 +48,7 @@ const authenticate = async (parent, { email, password }, context) => {
         // On créé un token avec JWT.
         const token = sign({ _id: _user._id }, "secret");
 
-        return { token };        
+        return { token };
     } catch(ex) { throw ex; }
 }
 
@@ -54,6 +69,6 @@ const deleteUser = async (parent, data, context) => {
 };
 
 module.exports = {
-    UserQueries: { user,  },
+    UserQueries: { user, me },
     UserMutations: { createUser, authenticate, updateUser, deleteUser },
 };
