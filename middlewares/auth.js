@@ -6,9 +6,9 @@ const getUserFromToken = async (token) => {
     try {
         let decoded = jwt.verify(token, 'secret');
         const user = await User.findOne({ _id: decoded._id })
-                                .populate('contacts');
+                                .populate('contacts').populate('favorites');
         if(user) return user;
-        
+
         return {};
     } catch(ex) {
         throw ex;

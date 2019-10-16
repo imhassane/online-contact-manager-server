@@ -23,6 +23,8 @@ type Mutation {
     createUser(email: String!, password: String!): User!
     updateUser(email: String, password: String): User!
     deleteUser(_id: ID!): User!
+    updatePassword(password: String!, newPassword: String!): User!
+    generateNewPassword(email: String!): User!
 
     authenticate(email: String!, password: String!): Authentication!
 
@@ -43,4 +45,7 @@ type Mutation {
 
     addToFavorites(_id: ID!): Contact!
     removeFromFavorites(_id: ID!): Contact!
+
+    # Profils.
+    updateProfil(first_name: String, last_name: String): Profil!
 }

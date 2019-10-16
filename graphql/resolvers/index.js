@@ -1,13 +1,15 @@
 const { UserQueries, UserMutations } = require('./user');
 const { ContactQueries, ContactMutations } = require('./contact');
+const { ProfilMutations } = require('./profil');
 
 module.exports.resolvers = {
-    Query: Object.assign({}, 
+    Query: Object.assign({},
                             UserQueries,
                             ContactQueries
                         ),
     Mutation: Object.assign({},
                                 UserMutations,
-                                ContactMutations
+                                ContactMutations,
+                                ProfilMutations
                             )
 };

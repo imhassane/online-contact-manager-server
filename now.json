@@ -1,0 +1,9 @@
+{
+  "build": {
+      "env": {
+        "MAILJET_ID": "@mailjet_id",
+        "MAILJET_ACCESS_TOKEN": "@mailjet_access_token",
+        "DATABASE": "@database"
+      }
+  }
+}
