@@ -1,7 +1,7 @@
 # import User from './schemas/user.graphql'
 # import Profil from './schemas/profil.graphql'
-# import Contact from './schemas/Contact.graphql'
-# import Authentication from './schemas/Authentication.graphql'
+# import Contact from './schemas/contact.graphql'
+# import Authentication from './schemas/authentication.graphql'
 
 scalar DateTime
 

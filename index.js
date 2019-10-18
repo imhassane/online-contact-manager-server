@@ -1,4 +1,4 @@
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer } = require('apollo-server-micro');
 const { importSchema } = require('graphql-import');
 
 const { resolvers } = require('./graphql/resolvers');
@@ -31,6 +31,4 @@ const context = async ({ req }) => {
 
 const server = new ApolloServer({ typeDefs, resolvers: { ...resolvers, DateTime: GraphQLDateTime }, context });
 
-server.listen().then(({ url }) => {
-    logger.info("Serveur lancé à l'url: " + url);
-})
+module.exports = server.createHandler({ path: '/' });
